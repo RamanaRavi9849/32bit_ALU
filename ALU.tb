@@ -1,0 +1,52 @@
+`timescale 1ns / 1ps
+
+
+module ALU_tb;
+reg [31:0] A, B;          
+reg [3:0] ALU_Sel;      
+wire [31:0] ALU_Out;       
+wire CarryOut;           
+bit_alu uut (
+    .A(A),                 
+    .B(B),                 
+    .ALU_Sel(ALU_Sel),     
+    .ALU_Out(ALU_Out),     
+    .CarryOut(CarryOut)   
+);
+initial begin
+    A = 16'd0; B = 16'd0; ALU_Sel = 4'd0;
+    #10;
+    A = 16'd15; B = 16'd10; ALU_Sel = 4'b0000; #10; 
+    $display("ADD: A=%d, B=%d, ALU_Out=%d, CarryOut=%b", A, B, ALU_Out, CarryOut);
+
+    A = 16'd20; B = 16'd5; ALU_Sel = 4'b0001; #10;
+    $display("SUB: A=%d, B=%d, ALU_Out=%d, CarryOut=%b", A, B, ALU_Out, CarryOut);
+
+    A = 8'b11001100; B = 8'b10101010; ALU_Sel = 4'b0010; #10; 
+    $display("AND: A=%b, B=%b, ALU_Out=%b", A, B, ALU_Out);
+
+    ALU_Sel = 4'b0011; #10; 
+    $display("OR: A=%b, B=%b, ALU_Out=%b", A, B, ALU_Out);
+
+    ALU_Sel = 4'b0100; #10; 
+    $display("XOR: A=%b, B=%b, ALU_Out=%b", A, B, ALU_Out);
+
+    ALU_Sel = 4'b0101; #10; 
+    $display("NOT: A=%b, ALU_Out=%b", A, ALU_Out);
+
+    A = 8'b00001111; ALU_Sel = 4'b0110; #10; 
+    $display("LSL: A=%b, ALU_Out=%b", A, ALU_Out);
+
+    ALU_Sel = 4'b0111; #10; 
+    $display("LSR: A=%b, ALU_Out=%b", A, ALU_Out);
+
+    A = 8'd25; B = 8'd15; ALU_Sel = 4'b1000; #10; 
+    $display("GT: A=%d, B=%d, ALU_Out=%b", A, B, ALU_Out);
+
+    A = 8'd10; B = 8'd10; ALU_Sel = 4'b1001; #10; 
+    $display("EQ: A=%d, B=%d, ALU_Out=%b", A, B, ALU_Out);
+
+    $stop;
+end
+endmodule
+
